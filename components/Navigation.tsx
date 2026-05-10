@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const navItems = [
   { href: "/", label: "首页" },
@@ -24,7 +25,7 @@ export function Navigation() {
           </Link>
         ))}
       </nav>
+      <ThemeToggle />
     </header>
   );
 }
-

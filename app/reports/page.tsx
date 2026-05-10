@@ -1,8 +1,8 @@
+import { EChartsPanel } from "@/components/EChartsPanel";
 import { FilterBar } from "@/components/FilterBar";
 import { InsightPanel } from "@/components/InsightPanel";
 import { MetricGrid } from "@/components/MetricGrid";
 import { PageHeader } from "@/components/PageHeader";
-import { SimpleChart } from "@/components/SimpleChart";
 import { districtTrend, reportInsights, trendData } from "@/lib/mockData";
 
 const reportMetrics = [
@@ -23,8 +23,18 @@ export default function ReportsPage() {
       <FilterBar />
       <MetricGrid metrics={reportMetrics} />
       <section className="dashboard-grid">
-        <SimpleChart title="城市成交金额趋势" data={trendData} valueKey="amount" labelKey="label" unit="亿" />
-        <SimpleChart title="城市成交面积趋势" data={trendData} valueKey="area" labelKey="label" unit="万㎡" />
+        <EChartsPanel
+          title="城市成交金额趋势"
+          data={trendData}
+          labelKey="label"
+          series={[{ name: "成交金额", valueKey: "amount", unit: " 亿元", type: "bar" }]}
+        />
+        <EChartsPanel
+          title="城市成交面积趋势"
+          data={trendData}
+          labelKey="label"
+          series={[{ name: "成交面积", valueKey: "area", unit: " 万㎡", type: "line" }]}
+        />
         <article className="panel district-table-panel">
           <div className="panel-heading">
             <h2>区域趋势对比</h2>
@@ -46,4 +56,3 @@ export default function ReportsPage() {
     </>
   );
 }
-

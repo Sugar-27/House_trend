@@ -1,10 +1,10 @@
 import Link from "next/link";
+import { EChartsPanel } from "@/components/EChartsPanel";
 import { FilterBar } from "@/components/FilterBar";
 import { InsightPanel } from "@/components/InsightPanel";
 import { MetricGrid } from "@/components/MetricGrid";
 import { PageHeader } from "@/components/PageHeader";
 import { RankingList } from "@/components/RankingList";
-import { SimpleChart } from "@/components/SimpleChart";
 import { dashboardSummary, reportInsights, trendData } from "@/lib/mockData";
 
 const featureCards = [
@@ -25,8 +25,18 @@ export default function HomePage() {
       <MetricGrid metrics={dashboardSummary} />
 
       <section className="dashboard-grid">
-        <SimpleChart title="成交均价趋势" data={trendData} valueKey="price" labelKey="label" unit="" />
-        <SimpleChart title="成交量趋势" data={trendData} valueKey="volume" labelKey="label" unit="套" />
+        <EChartsPanel
+          title="成交均价趋势"
+          data={trendData}
+          labelKey="label"
+          series={[{ name: "成交均价", valueKey: "price", unit: " 元/㎡", type: "line" }]}
+        />
+        <EChartsPanel
+          title="成交量趋势"
+          data={trendData}
+          labelKey="label"
+          series={[{ name: "成交套数", valueKey: "volume", unit: " 套", type: "bar" }]}
+        />
         <RankingList />
         <InsightPanel title="市场核心摘要" items={reportInsights} />
       </section>
@@ -43,4 +53,3 @@ export default function HomePage() {
     </>
   );
 }
-

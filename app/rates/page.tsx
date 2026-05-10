@@ -1,7 +1,7 @@
+import { EChartsPanel } from "@/components/EChartsPanel";
 import { FilterBar } from "@/components/FilterBar";
 import { MetricGrid } from "@/components/MetricGrid";
 import { PageHeader } from "@/components/PageHeader";
-import { SimpleChart } from "@/components/SimpleChart";
 import { rateCards, rateTrend } from "@/lib/mockData";
 
 const rateInsights = [
@@ -21,9 +21,24 @@ export default function RatesPage() {
       <FilterBar />
       <MetricGrid metrics={rateCards.map((item) => ({ ...item, tone: "neutral" as const }))} />
       <section className="dashboard-grid">
-        <SimpleChart title="商业贷款利率趋势" data={rateTrend} valueKey="commercial" labelKey="label" unit="%" />
-        <SimpleChart title="公积金贷款利率趋势" data={rateTrend} valueKey="provident" labelKey="label" unit="%" />
-        <SimpleChart title="SHIBOR 参考趋势" data={rateTrend} valueKey="shibor" labelKey="label" unit="%" />
+        <EChartsPanel
+          title="商业贷款利率趋势"
+          data={rateTrend}
+          labelKey="label"
+          series={[{ name: "商贷利率", valueKey: "commercial", unit: "%", type: "line" }]}
+        />
+        <EChartsPanel
+          title="公积金贷款利率趋势"
+          data={rateTrend}
+          labelKey="label"
+          series={[{ name: "公积金利率", valueKey: "provident", unit: "%", type: "line" }]}
+        />
+        <EChartsPanel
+          title="SHIBOR 参考趋势"
+          data={rateTrend}
+          labelKey="label"
+          series={[{ name: "SHIBOR", valueKey: "shibor", unit: "%", type: "line" }]}
+        />
         <article className="panel insight-panel">
           <div className="panel-heading">
             <h2>利率解读</h2>
@@ -39,4 +54,3 @@ export default function RatesPage() {
     </>
   );
 }
-
