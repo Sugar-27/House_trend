@@ -1,17 +1,22 @@
-import { calendarDays } from "@/lib/mockData";
+import type { CalendarDay, MarketFilterState } from "@/lib/mockData";
 
-export function CalendarGrid() {
+type CalendarGridProps = {
+  days: CalendarDay[];
+  activeFilters: MarketFilterState;
+};
+
+export function CalendarGrid({ days, activeFilters }: CalendarGridProps) {
   return (
     <article className="panel calendar-panel">
       <div className="panel-heading">
         <h2>2026年5月成交日历</h2>
-        <span>上海 · 一手房</span>
+        <span>{activeFilters.city} · {activeFilters.district} · {activeFilters.houseType === "new" ? "一手房" : "二手房"}</span>
       </div>
       <div className="calendar-weekdays">
-        {['一', '二', '三', '四', '五', '六', '日'].map((day) => <span key={day}>周{day}</span>)}
+        {["一", "二", "三", "四", "五", "六", "日"].map((day) => <span key={day}>周{day}</span>)}
       </div>
       <div className="calendar-grid">
-        {calendarDays.map((item) => (
+        {days.map((item) => (
           <div className={`calendar-cell heat-${item.heat}`} key={item.day}>
             <div className="calendar-day">
               <strong>{item.day}</strong>
@@ -26,4 +31,3 @@ export function CalendarGrid() {
     </article>
   );
 }
-

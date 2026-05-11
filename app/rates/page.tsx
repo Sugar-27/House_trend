@@ -2,7 +2,7 @@ import { EChartsPanel } from "@/components/EChartsPanel";
 import { FilterBar } from "@/components/FilterBar";
 import { MetricGrid } from "@/components/MetricGrid";
 import { PageHeader } from "@/components/PageHeader";
-import { rateCards, rateTrend } from "@/lib/mockData";
+import { getFilteredMarketData, normalizeFilters, type SearchParams } from "@/lib/mockData";
 
 const rateInsights = [
   "当前商贷首套利率处于近半年低位，贷款成本边际下降，有助于改善型需求释放。",
@@ -10,32 +10,35 @@ const rateInsights = [
   "首付比例维持稳定，短期政策关注点更偏向信贷执行节奏和区域库存去化。",
 ];
 
-export default function RatesPage() {
+export default function RatesPage({ searchParams }: { searchParams?: SearchParams }) {
+  const activeFilters = normalizeFilters(searchParams);
+  const marketData = getFilteredMarketData(activeFilters);
+
   return (
     <>
       <PageHeader
         eyebrow="Mortgage & Rate Monitor"
-        title="楼市利率"
-        description="聚合商业贷款、公积金贷款、首付比例与 SHIBOR 参考指标，为市场趋势判断补充金融侧视角。"
+        title={`${activeFilters.city}楼市利率`}
+        description={`聚合${activeFilters.city}商业贷款、公积金贷款、首付比例与 SHIBOR 参考指标，并随筛选条件联动刷新金融侧观察。`}
       />
-      <FilterBar />
-      <MetricGrid metrics={rateCards.map((item) => ({ ...item, tone: "neutral" as const }))} />
+      <FilterBar activeFilters={activeFilters} />
+      <MetricGrid metrics={marketData.rateCards.map((item) => ({ ...item, tone: "neutral" as const }))} />
       <section className="dashboard-grid">
         <EChartsPanel
           title="商业贷款利率趋势"
-          data={rateTrend}
+          data={marketData.rateTrend}
           labelKey="label"
           series={[{ name: "商贷利率", valueKey: "commercial", unit: "%", type: "line" }]}
         />
         <EChartsPanel
           title="公积金贷款利率趋势"
-          data={rateTrend}
+          data={marketData.rateTrend}
           labelKey="label"
           series={[{ name: "公积金利率", valueKey: "provident", unit: "%", type: "line" }]}
         />
         <EChartsPanel
           title="SHIBOR 参考趋势"
-          data={rateTrend}
+          data={marketData.rateTrend}
           labelKey="label"
           series={[{ name: "SHIBOR", valueKey: "shibor", unit: "%", type: "line" }]}
         />
